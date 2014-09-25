@@ -18,8 +18,8 @@ data requirements: Degree distribution, mean path length, diameter, clustering c
 modularity index
 
 Are there "hubs" within this network? Do hubs behave differently than non-hubs?
-Data requirements: nodes sorted by degree, some cutoff criteria. Then identification of within and between module hubs. 
-Degree vs abundance chart. 
+Data requirements: nodes sorted by degree, some cutoff criteria. Then
+identification of within and between module hubs.  Degree vs abundance chart. 
 
 Do phylogenetically more related groups interact differently than random groups?
 Data requirements: 
@@ -200,8 +200,9 @@ def organize_raw_data(df,path):
 
 # These are completed but not very well written. 
 def make_node_edge_tables(data, path):
-    # Creating edge/node Dataframes from otu table, goal is to get a dataframe I can refer to for a while with all
-    # phylogenetic classifications and network properties specified. 
+    # Creating: edge/node Dataframes from otu table, goal is to get a dataframe
+    # I can refer to for a while with all phylogenetic classifications and
+    # network properties specified. 
     # This is the longest code to do this little ever. ROFL
     print data
     data2 = data.dropna() # eliminate NAs
