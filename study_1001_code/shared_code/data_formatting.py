@@ -65,4 +65,12 @@ def load_otu_sequences(rep_set, tax_assignments):
     for key, val in sequences.iteritems():
         rep_seqs.loc[rep_seqs.seq_IDs==key, 'sequence'] = val
 
-    return rep_seqs 
+    return rep_seqs
+
+
+def hamming_distance(s1, s2):
+    #Return the Hamming distance between equal-length sequences
+    if len(s1) != len(s2):
+        raise ValueError("Undefined for sequences of unequal length")
+    return (sum(ch1 != ch2 for ch1, ch2 in zip(s1, s2)))/float(len(s1))
+

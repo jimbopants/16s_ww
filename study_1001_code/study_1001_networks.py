@@ -82,6 +82,7 @@ full_data, filtered_edges)
 
 
 def store_df(df, path, name):
+    # DEPRECIATED (JUST A FUCKIN USELESS FUNCTION REALLY)
     # I Would like to store dataframes as objects outside of python and
     # automatically update them. 
     # This should be deleted, it does absolutely nothing and clutters code.
@@ -90,6 +91,10 @@ def store_df(df, path, name):
 
 
 def get_otu_names(df, new_column):
+    # DEPRECIATED: this just isn't useful compared to the more general way to
+    # do this
+
+
     # Need to take a raw EMP dataframe and add simple OTU/taxa names to easily
     # match other edge/node tables.
     df[new_column] = df["Taxon"]                    # add name column
