@@ -37,16 +37,31 @@ filtered_edges = pd.read_pickle(data_path+"filtered_edges_q05_r80")
 #rep_seqs.to_pickle(results_path+"node_dataframe")
 
 
+
 # import ccrepe data and store as edge and node table. Filter edge table based on q and r values
+####
 #edges, node_table = sf.make_node_edge_tables(data)
 #edges2 = sf.edge_filter(edges, .05, .8)
 #edges.to_pickle(data_path+"all_edges")
 #edges2.to_pickle(data_path+"filtered_edges_q05_r80")
 #node_table.to_pickle(data_path+"all_nodes")
+####
 
+
+# Get sequences for each edge and calculate hamming distance
+edges_with_seqs = sf.fetch_seqs(filtered_edges, rep_seqs)
+edges_with_seqs.to_pickle(results_path+"edges_with_sequences")
+# call hamming distance on each row now and make it equal a new row
 
 
 # to do:
+# I need to move the strip spaces to the first time I import any data.
+# Also need to figure out why the fuck there are so many NANs left. 
+# It is a huge mystery to me why there is not more consistent overlap between different data sources from QIIME results
+# this should work 100% of the time. 
+
+
+
 
 # Next step after getting node table and edge table. Import lvl6 abundance data from QIIME directory
 # check edges, frequency, abundance, abundance by sample type, interaction density, 

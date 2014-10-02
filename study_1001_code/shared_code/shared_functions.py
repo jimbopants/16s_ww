@@ -59,6 +59,7 @@ def load_otu_sequences(rep_set, tax_assignments):
     # Get phyla strings and strip species section. 
     phyla = [ row[1] for row in seq_name_split ]
     phyla = [string.split('; s')[0] for string in phyla ]
+    phyla = [s.replace(" ", "") for s in phyla]
 
     # Create dictionary of format {denovo# : 'k__p__c__...'} 
     names = [ row[0] for row in seq_name_split ]
@@ -113,6 +114,29 @@ def edge_filter(edge_table, Q_val=.05, R_val=.8):
     return edges
 
 
+def fetch_seqs(edges, rep_seqs):
+    # adds sequence data to edge dataframe
+    # Creates a taxa:seq dictionary from rep_seqs, 
+    # adds new columns for sequence data to edge DF, and returns edges
+
+    keys = rep_seqs.taxa.tolist()
+    keys = [s.replace(" ","") for s in keys]
+    values = rep_seqs.sequence.tolist()
+
+    taxa_dict = dict(zip(keys, values))
+    edges['seq1'] = np.nan
+    edges['seq2'] = np.nan
+    edges['feature1'] = edges['feature1'].str.replace(" ","")
+    edges['feature2'] = edges['feature2'].str.replace(" ","")
+    print edges.ix[1911, 'feature1']
+
+    for row in edges.iterrows():
+        if row[1][0] in taxa_dict:
+            edges.ix[ edges['feature1']==row[1][0], 'seq1' ] = taxa_dict[ row[1][0] ]
+        if row[1][1] in taxa_dict:
+            edges.ix[ edges['feature2']==row[1][1], 'seq2' ] = taxa_dict[ row[1][1] ]
+
+    return edges
 
 
 
