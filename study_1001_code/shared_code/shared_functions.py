@@ -21,8 +21,8 @@ def taxa_string_split(df, name_column, sep=';', depth=5):
         splits = df[name_column].str.split(';').str.get(i)
         df[taxa_cat[i]] = splits
 
+    print df.count()
     return df
-
 
 
 def dict_key_from_value(a_dict,a_value):
@@ -58,26 +58,28 @@ def load_otu_sequences(rep_set, tax_assignments):
     seq_name_split = [x for x in seq_name_split if len(x) >1]    
     # Get phyla strings and strip species section. 
     phyla = [ row[1] for row in seq_name_split ]
-    phyla = [string.split('; s')[0] for string in phyla ]
+    phyla = [s.split('; s')[0] for s in phyla ]
     phyla = [s.replace(" ", "") for s in phyla]
+    phyla = [s.replace(" ","") for s in phyla]
+    phyla = [s.lower() for s in phyla]
+
 
     # Create dictionary of format {denovo# : 'k__p__c__...'} 
     names = [ row[0] for row in seq_name_split ]
     phyla_OTU_IDs = dict(zip(names, phyla))
-
-    phyla_set = set(phyla_OTU_IDs.values())
+    phyla_set = set(phyla_OTU_IDs.values())    
 
     # Invert dictionary to only have 1 denovo assigned OTU per database aligned OTU
     shortened_dict = {}
     for taxa in phyla_set:
         if taxa not in shortened_dict:
             shortened_dict[taxa] = dict_key_from_value(phyla_OTU_IDs,taxa)
-    
+
+
     rep_seqs = pd.DataFrame({'taxa' : shortened_dict.keys(), 'seq_IDs' : shortened_dict.values() })
     
     for key, val in sequences.iteritems():
         rep_seqs.loc[rep_seqs.seq_IDs==key, 'sequence'] = val
-
     return rep_seqs 
 
 
@@ -85,6 +87,9 @@ def make_node_edge_tables(ccrepe_results):
     # Creates and returns edge and node dataframes from ccrepe result table
 
     ccrepe2 = ccrepe_results.dropna() # eliminate NAs in edge table
+    
+    ccrepe2['feature1'] = ccrepe2['feature1'].str.replace(" ","").str.lower()
+    ccrepe2['feature2'] = ccrepe2['feature2'].str.replace(" ","").str.lower()
     
     # initialize a dataframe and add rows for each unique taxon in dataset.
     node_table = pd.DataFrame( columns = ['taxa'])
@@ -95,7 +100,7 @@ def make_node_edge_tables(ccrepe_results):
                 node_set.add(taxa[1][i])
                 node_series = pd.Series(taxa[1][i], index= ['taxa'])
                 node_table = node_table.append(node_series, ignore_index = True)
-    
+
     return ccrepe2, node_table
 
 

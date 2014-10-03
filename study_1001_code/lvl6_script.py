@@ -20,9 +20,10 @@ tax_assignments = '/Users/jimbo/qiime/study_1001/output/dn_otu/uclust_assigned_t
 # Data imports (just to shorten run time while doing this iteratively - delete later
 rep_seqs = pd.read_pickle(results_path+"node_dataframe")
 data = pd.io.parsers.read_table(data_path+'ccrepe_results_lvl6', sep = ' ')
-edges = pd.read_pickle(data_path+"all_edges")
+#edges = pd.read_pickle(data_path+"all_edges")
 nodes = pd.read_pickle(data_path+"all_nodes")
-filtered_edges = pd.read_pickle(data_path+"filtered_edges_q05_r80")
+#filtered_edges = pd.read_pickle(data_path+"filtered_edges_q05_r80")
+
 
 
 # import QIIME data and store in a dataframe organized by:
@@ -41,7 +42,30 @@ filtered_edges = pd.read_pickle(data_path+"filtered_edges_q05_r80")
 # import ccrepe data and store as edge and node table. Filter edge table based on q and r values
 ####
 #edges, node_table = sf.make_node_edge_tables(data)
+
+#print node_table.head()
+#print edges.count()
+#print node_table.count()
 #edges2 = sf.edge_filter(edges, .05, .8)
+#print edges2.count()
+
+nodes = nodes.taxa.tolist()
+nodes = [n.replace("(class)","") for n in nodes]
+node_set = set(nodes)
+
+reps = rep_seqs.taxa.tolist()
+reps = [r.replace("(class)","") for r in reps]
+rep_set = set(reps)
+#print node_set
+
+print len(rep_set)
+print len(node_set)
+print rep_seqs[
+
+print len(node_set.difference(rep_set))
+print len(node_set.intersection(rep_set))
+#print node_set.intersection(rep_set)
+
 #edges.to_pickle(data_path+"all_edges")
 #edges2.to_pickle(data_path+"filtered_edges_q05_r80")
 #node_table.to_pickle(data_path+"all_nodes")
@@ -49,8 +73,8 @@ filtered_edges = pd.read_pickle(data_path+"filtered_edges_q05_r80")
 
 
 # Get sequences for each edge and calculate hamming distance
-edges_with_seqs = sf.fetch_seqs(filtered_edges, rep_seqs)
-edges_with_seqs.to_pickle(results_path+"edges_with_sequences")
+#edges_with_seqs = sf.fetch_seqs(filtered_edges, rep_seqs)
+#edges_with_seqs.to_pickle(results_path+"edges_with_sequences")
 # call hamming distance on each row now and make it equal a new row
 
 
